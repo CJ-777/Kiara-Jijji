@@ -9,6 +9,7 @@ mp_hands = mp.solutions.hands
 
 cap = cv2.VideoCapture(0)
 cordinate_list = []
+counter = {}
 
 with mp_hands.Hands(
     model_complexity=0,
@@ -21,6 +22,7 @@ with mp_hands.Hands(
         raise IOError("Cannot open webcam")
 
     while True:
+        cordinates = []
         ret, frame = cap.read()
 
         h, w, c = frame.shape
@@ -81,8 +83,12 @@ with mp_hands.Hands(
             if c == 27:
                 break
             if c >= 97 and c <= 122:
+                if c in counter:
+                    counter[c] += 1
+                else:
+                    counter[c] = 1
                 cordinates.append(chr(c))
-                print(f"You pressed {chr(c)}!")
+                print(f"You pressed {chr(c)} {counter[c]} times!")
                 cordinate_list.append(cordinates)
         except:
             print(

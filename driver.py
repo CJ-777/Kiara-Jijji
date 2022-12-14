@@ -82,7 +82,7 @@ with mp_hands.Hands(
         try:
             if c == 27:
                 break
-            if c >= 97 and c <= 122:
+            if c >= 97 and c <= 122 and len(cordinates) > 0:
                 if c in counter:
                     counter[c] += 1
                 else:

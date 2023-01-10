@@ -16,7 +16,7 @@ with mp_hands.Hands(
     model_complexity=0,
     min_detection_confidence=0.5,
     min_tracking_confidence=0.5,
-    max_num_hands=1,
+    max_num_hands=2,
 ) as hands:
 
     if not cap.isOpened():
@@ -41,8 +41,8 @@ with mp_hands.Hands(
         frame_bgr = cv2.cvtColor(frame_bgr, cv2.COLOR_RGB2BGR)
 
         if results.multi_hand_landmarks:
+            cordinates = []
             for handResult in results.multi_hand_landmarks:
-                cordinates = []
                 x_min, y_min, z_min, x_max, y_max, z_max = customUtils.findMinMax(handResult.landmark, w, h)
                 for landmark in handResult.landmark:
                     cordinates.append(landmark.x - x_min)
@@ -74,6 +74,9 @@ with mp_hands.Hands(
                     counter[c] += 1
                 else:
                     counter[c] = 1
+                if len(cordinates)<125:
+                    while len(cordinates)<=125:
+                        cordinates.append(0)
                 cordinates.append(chr(c))
                 print(f"You pressed {chr(c)} {counter[c]} times!")
                 cordinate_list.append(cordinates)
